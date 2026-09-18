@@ -64,6 +64,14 @@
         return false;
       }
     }
+    if (n === 3) {
+      const gewicht = document.getElementById("gewicht").value.trim();
+      const groesse = document.getElementById("groesse").value.trim();
+      if (!gewicht || !groesse) {
+        alert("Bitte geben Sie Körpergewicht und Körpergröße an.");
+        return false;
+      }
+    }
     if (n === 5) {
       const consent = document.querySelector('input[name="einwilligung"]:checked');
       if (!consent) {
@@ -391,11 +399,13 @@
     }
 
     function yesNoLine(question, answerVal, detail) {
-      ensureSpace(9);
-      const startY = y;
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
       const qLines = doc.splitTextToSize(question, contentW - 30);
+      const dLinesPreview = detail ? doc.splitTextToSize("- " + detail, contentW) : [];
+      const rowHeight = qLines.length * 5.2 + dLinesPreview.length * 4.6 + 2 + 3.5;
+      ensureSpace(rowHeight);
+      const startY = y;
       doc.text(qLines, marginL, y);
       const jaChecked = answerVal === "ja";
       const neinChecked = answerVal === "nein";
@@ -405,14 +415,13 @@
       if (detail) {
         doc.setFont("helvetica", "italic");
         doc.setFontSize(9);
-        const dLines = doc.splitTextToSize("- " + detail, contentW);
-        ensureSpace(dLines.length * 4.6);
-        doc.text(dLines, marginL + 3, y);
-        y += dLines.length * 4.6;
+        doc.text(dLinesPreview, marginL + 3, y);
+        y += dLinesPreview.length * 4.6;
       }
       y += 2;
       doc.setDrawColor(225);
-      doc.line(marginL, y - 1.5, pageW - marginR, y - 1.5);
+      doc.line(marginL, y, pageW - marginR, y);
+      y += 3.5;
     }
 
     /* ---- Seite 1: Deckblatt / Patientendaten ---- */
