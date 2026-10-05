@@ -9,6 +9,21 @@
     telefon: "Tel: 040 - 35 00 4840"
   };
 
+  /* ---------- PDF-Gestaltung (Praxis-Design an einer Stelle) ----------
+     Schrift: jsPDF-Standardschriften sind "helvetica", "times", "courier".
+     Eine eigene Hausschrift erfordert zusaetzlich eine eingebettete
+     Schriftdatei (doc.addFont) - siehe README.                        */
+  const PDF_THEME = {
+    font: "helvetica",
+    heading:    [20, 85, 129],    // Abschnittstitel, entspricht --blue-dark
+    text:       [0, 0, 0],
+    textMuted:  [140, 140, 140],  // Fussnote
+    ruleStrong: [60, 60, 60],     // Ankreuzkaestchen
+    ruleMedium: [150, 150, 150],  // Unterschriftslinien, Rahmen
+    ruleSoft:   [180, 180, 180],  // Linie unter dem Briefkopf
+    ruleFaint:  [225, 225, 225]   // Trennlinien zwischen Fragen
+  };
+
   const SCHMERZ_OPTIONEN = [
     "örtlich begrenzt", "dumpf", "brennend, heiß", "bohrend", "reißend",
     "in Ruhe stärker", "mit Lähmung",
@@ -308,10 +323,10 @@
 
     function addLetterhead() {
       y = 16;
-      doc.setFont("helvetica", "bold");
+      doc.setFont(PDF_THEME.font, "bold");
       doc.setFontSize(13);
       doc.text(PRAXIS.name, marginL, y);
-      doc.setFont("helvetica", "normal");
+      doc.setFont(PDF_THEME.font, "normal");
       doc.setFontSize(9.5);
       y += 5;
       doc.text(PRAXIS.aerzte, marginL, y);
@@ -320,7 +335,7 @@
       y += 4.2;
       doc.text(PRAXIS.telefon, marginL, y);
       y += 3;
-      doc.setDrawColor(180);
+      doc.setDrawColor(...PDF_THEME.ruleSoft);
       doc.line(marginL, y, pageW - marginR, y);
       y += 8;
     }
@@ -334,17 +349,17 @@
 
     function heading(text) {
       ensureSpace(10);
-      doc.setFont("helvetica", "bold");
+      doc.setFont(PDF_THEME.font, "bold");
       doc.setFontSize(12.5);
-      doc.setTextColor(20, 85, 129);
+      doc.setTextColor(...PDF_THEME.heading);
       doc.text(text, marginL, y);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(...PDF_THEME.text);
       y += 6;
     }
 
     function subheading(text) {
       ensureSpace(8);
-      doc.setFont("helvetica", "bold");
+      doc.setFont(PDF_THEME.font, "bold");
       doc.setFontSize(10.5);
       doc.text(text, marginL, y);
       y += 5.5;
@@ -352,7 +367,7 @@
 
     function bodyText(text, opts) {
       opts = opts || {};
-      doc.setFont("helvetica", opts.bold ? "bold" : "normal");
+      doc.setFont(PDF_THEME.font, opts.bold ? "bold" : "normal");
       doc.setFontSize(opts.size || 10);
       const lines = doc.splitTextToSize(text, contentW);
       lines.forEach(line => {
@@ -364,7 +379,7 @@
 
     function checkbox(x, yy, checked, label, labelWidth) {
       const size = 3.6;
-      doc.setDrawColor(60);
+      doc.setDrawColor(...PDF_THEME.ruleStrong);
       doc.setLineWidth(0.3);
       doc.rect(x, yy - size + 0.8, size, size);
       if (checked) {
@@ -372,7 +387,7 @@
         doc.line(x + 0.4, yy - size + 1.2, x + size - 0.4, yy - 0.6);
         doc.line(x + size - 0.4, yy - size + 1.2, x + 0.4, yy - 0.6);
       }
-      doc.setFont("helvetica", "normal");
+      doc.setFont(PDF_THEME.font, "normal");
       doc.setFontSize(9.5);
       const lines = labelWidth ? doc.splitTextToSize(label, labelWidth) : [label];
       doc.text(lines, x + size + 2, yy);
@@ -381,11 +396,11 @@
 
     function fieldLine(label, value) {
       ensureSpace(6.5);
-      doc.setFont("helvetica", "bold");
+      doc.setFont(PDF_THEME.font, "bold");
       doc.setFontSize(9.5);
       doc.text(label + ":", marginL, y);
       const labelW = doc.getTextWidth(label + ":  ");
-      doc.setFont("helvetica", "normal");
+      doc.setFont(PDF_THEME.font, "normal");
       doc.text(value || "-", marginL + labelW + 2, y);
       y += 6.5;
     }
@@ -393,7 +408,7 @@
     function yesNoLine(question, answerVal, detail) {
       ensureSpace(9);
       const startY = y;
-      doc.setFont("helvetica", "normal");
+      doc.setFont(PDF_THEME.font, "normal");
       doc.setFontSize(9.5);
       const qLines = doc.splitTextToSize(question, contentW - 30);
       doc.text(qLines, marginL, y);
@@ -403,7 +418,7 @@
       checkbox(pageW - marginR - 12, startY, neinChecked, "Nein");
       y += qLines.length * 5.2;
       if (detail) {
-        doc.setFont("helvetica", "italic");
+        doc.setFont(PDF_THEME.font, "italic");
         doc.setFontSize(9);
         const dLines = doc.splitTextToSize("- " + detail, contentW);
         ensureSpace(dLines.length * 4.6);
@@ -411,7 +426,7 @@
         y += dLines.length * 4.6;
       }
       y += 2;
-      doc.setDrawColor(225);
+      doc.setDrawColor(...PDF_THEME.ruleFaint);
       doc.line(marginL, y - 1.5, pageW - marginR, y - 1.5);
     }
 
@@ -462,7 +477,7 @@
     } else {
       const bereiche = Array.from(document.querySelectorAll("#bereichGrid input:checked")).map(i => i.value);
       const andere = val("andereBereich");
-      doc.setFont("helvetica", "normal");
+      doc.setFont(PDF_THEME.font, "normal");
       doc.setFontSize(9.5);
       ensureSpace(6);
       doc.text("Beschwerden im Bereich:", marginL, y);
@@ -504,7 +519,7 @@
       let colY = [y, y];
       let col = 0;
       selected.forEach(text => {
-        doc.setFont("helvetica", "normal");
+        doc.setFont(PDF_THEME.font, "normal");
         doc.setFontSize(9.5);
         const lines = doc.splitTextToSize(text, colW - 8);
         const h = lines.length * 4.8 + 1.5;
@@ -540,11 +555,11 @@
       const sigW = 70, sigH = 25;
       ensureSpace(sigH + 4);
       doc.addImage(patientSig.dataURL(), "PNG", marginL, y, sigW, sigH);
-      doc.setDrawColor(150);
+      doc.setDrawColor(...PDF_THEME.ruleMedium);
       doc.line(marginL, y + sigH + 1, marginL + sigW, y + sigH + 1);
       y += sigH + 6;
     } else {
-      doc.setDrawColor(150);
+      doc.setDrawColor(...PDF_THEME.ruleMedium);
       ensureSpace(20);
       doc.line(marginL, y + 18, marginL + 70, y + 18);
       y += 22;
@@ -561,7 +576,7 @@
         const sigW = 70, sigH = 25;
         ensureSpace(sigH + 4);
         doc.addImage(sorgeSig.dataURL(), "PNG", marginL, y, sigW, sigH);
-        doc.setDrawColor(150);
+        doc.setDrawColor(...PDF_THEME.ruleMedium);
         doc.line(marginL, y + sigH + 1, marginL + sigW, y + sigH + 1);
         y += sigH + 6;
       }
@@ -569,9 +584,9 @@
 
     y += 6;
     ensureSpace(16);
-    doc.setDrawColor(150);
+    doc.setDrawColor(...PDF_THEME.ruleMedium);
     doc.line(marginL, y + 14, marginL + 70, y + 14);
-    doc.setFont("helvetica", "italic");
+    doc.setFont(PDF_THEME.font, "italic");
     doc.setFontSize(8.5);
     doc.text("Unterschrift des Arztes/der Ärztin (vor Ort)", marginL, y + 18);
 
@@ -579,12 +594,12 @@
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
-      doc.setFont("helvetica", "normal");
+      doc.setFont(PDF_THEME.font, "normal");
       doc.setFontSize(8);
-      doc.setTextColor(140);
+      doc.setTextColor(...PDF_THEME.textMuted);
       doc.text(`Seite ${i} von ${pageCount}`, pageW - marginR, pageH - 8, { align: "right" });
       doc.text("Erstellt mit dem digitalen Anamnesebogen", marginL, pageH - 8);
-      doc.setTextColor(0);
+      doc.setTextColor(...PDF_THEME.text);
     }
 
     return doc;

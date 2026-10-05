@@ -9,7 +9,28 @@
   --danger-light: #fdecea;
   --bg: #f4f7f9;
   --card-bg: #ffffff;
+
+  /* Flaechen und Text auf Markenfarbe */
+  --surface: #ffffff;
+  --on-brand: #ffffff;
+  --accent-light: var(--accent-light);
+  --header-overlay: rgba(255,255,255,0.25);
+
+  /* Statusfarben */
+  --ok: var(--ok);
+  --danger-border: var(--danger-border);
+
+  /* Typografie */
+  --font-sans: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-sans);
+
+  /* Form */
   --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 4px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+
   font-size: 16px;
 }
 
@@ -17,7 +38,7 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--ink);
   padding-bottom: 96px;
@@ -43,7 +64,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .hint { font-size: 0.92rem; }
 .sub-hint { font-weight: 600; color: var(--ink); margin: 0.5rem 0; }
 .note { font-size: 0.85rem; font-style: italic; }
-.warn { color: var(--danger); background: var(--danger-light); padding: 0.75rem 1rem; border-radius: 8px; }
+.warn { color: var(--danger); background: var(--danger-light); padding: 0.75rem 1rem; border-radius: var(--radius-sm); }
 
 /* Header */
 .app-header {
@@ -51,7 +72,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
   top: 0;
   z-index: 20;
   background: var(--blue-dark);
-  color: #fff;
+  color: var(--on-brand);
   padding: 0.9rem 1rem 0;
 }
 .header-inner { max-width: 860px; margin: 0 auto; }
@@ -62,14 +83,14 @@ p { line-height: 1.55; color: var(--ink-soft); }
   max-width: 860px;
   margin: 0.75rem auto 0;
   height: 5px;
-  background: rgba(255,255,255,0.25);
-  border-radius: 4px;
+  background: var(--header-overlay);
+  border-radius: var(--radius-xs);
   overflow: hidden;
 }
 .progress-fill {
   height: 100%;
   width: 16.6%;
-  background: #7fd0ff;
+  background: var(--accent-light);
   transition: width 0.25s ease;
 }
 
@@ -91,7 +112,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
   opacity: 0.55;
   border-bottom: 2px solid transparent;
 }
-.stepper li.active { opacity: 1; font-weight: 600; border-bottom-color: #7fd0ff; }
+.stepper li.active { opacity: 1; font-weight: 600; border-bottom-color: var(--accent-light); }
 .stepper li.done { opacity: 0.85; }
 
 /* Wizard */
@@ -109,7 +130,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem 1.5rem 1.75rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-card);
 }
 
 /* Forms */
@@ -122,7 +143,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .field input[type="number"],
 .field textarea {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 0.6rem 0.7rem;
   font-size: 1rem;
   font-family: inherit;
@@ -140,7 +161,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
   .grid-2 { grid-template-columns: 1fr; }
 }
 
-.conditional { margin-left: 0; padding: 0.6rem 0.9rem; background: var(--blue-light); border-radius: 8px; display: none; }
+.conditional { margin-left: 0; padding: 0.6rem 0.9rem; background: var(--blue-light); border-radius: var(--radius-sm); display: none; }
 .conditional.show { display: flex; }
 
 /* Ja/Nein questions */
@@ -161,7 +182,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .yesno { display: flex; gap: 0.5rem; flex-shrink: 0; }
 .yesno label {
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.45rem 1.1rem;
   cursor: pointer;
   font-size: 0.9rem;
@@ -172,7 +193,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .yesno label:has(input:checked) {
   background: var(--blue);
   border-color: var(--blue);
-  color: #fff;
+  color: var(--on-brand);
   font-weight: 600;
 }
 .yesno label:has(input:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
@@ -191,7 +212,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
   margin-top: 1.25rem;
   padding: 0.9rem 1rem;
   background: var(--blue-light);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
 }
 
@@ -211,7 +232,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .dur-field { display: flex; flex-direction: column; gap: 0.25rem; width: 90px; }
 .dur-field input {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 0.4rem 0.5rem;
 }
 .dur-field label { font-size: 0.75rem; color: var(--ink-soft); }
@@ -221,22 +242,22 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .bodymap-toolbar { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
 .tool-btn {
   border: 1px solid var(--border);
-  background: #fff;
-  border-radius: 8px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
   padding: 0.5rem 0.9rem;
   font-size: 0.85rem;
   cursor: pointer;
 }
-.tool-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
-.tool-btn.danger { color: var(--danger); border-color: #eecbc6; }
+.tool-btn.active { background: var(--blue); color: var(--on-brand); border-color: var(--blue); }
+.tool-btn.danger { color: var(--danger); border-color: var(--danger-border); }
 .tool-btn.danger:hover { background: var(--danger-light); }
 
 .bodymap-canvas-holder {
   position: relative;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  background: #fff;
+  background: var(--surface);
   touch-action: none;
   line-height: 0;
 }
@@ -250,8 +271,8 @@ p { line-height: 1.55; color: var(--ink-soft); }
   max-width: 520px;
   height: 180px;
   border: 1px dashed var(--border);
-  border-radius: 8px;
-  background: #fff;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
   touch-action: none;
   cursor: crosshair;
 }
@@ -262,7 +283,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
 /* Summary + PDF */
 .summary-box {
   background: var(--blue-light);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 1rem 1.25rem;
   font-size: 0.9rem;
   margin-bottom: 1.25rem;
@@ -272,15 +293,15 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .summary-box .missing { color: var(--danger); font-weight: 600; }
 
 .pdf-status { font-weight: 600; margin-top: 0.75rem; }
-.pdf-status.ok { color: #1c7c3f; }
+.pdf-status.ok { color: var(--ok); }
 .pdf-status.err { color: var(--danger); }
 
 /* Buttons */
 .primary-btn {
   background: var(--blue);
-  color: #fff;
+  color: var(--on-brand);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 0.7rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
@@ -291,10 +312,10 @@ p { line-height: 1.55; color: var(--ink-soft); }
 .primary-btn.big { width: 100%; padding: 1rem; font-size: 1.05rem; }
 
 .secondary-btn {
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 0.7rem 1.5rem;
   font-size: 1rem;
   cursor: pointer;
@@ -306,7 +327,7 @@ p { line-height: 1.55; color: var(--ink-soft); }
   bottom: 0;
   left: 0;
   right: 0;
-  background: #fff;
+  background: var(--surface);
   border-top: 1px solid var(--border);
   padding: 0.75rem 1.25rem;
   display: flex;

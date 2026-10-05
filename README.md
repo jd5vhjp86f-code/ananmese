@@ -39,6 +39,38 @@ const PRAXIS = {
 };
 ```
 
+## Praxis-Design anpassen
+
+Alle Gestaltungsentscheidungen liegen an genau zwei Stellen:
+
+**Bildschirm:** der `:root`-Block am Anfang von `style.css`. Farben, Schriftstack, Eckenradien und Kartenschatten sind dort als CSS-Variablen definiert; der restliche Stylesheet enthaelt keine harten Farbwerte mehr.
+
+```css
+:root {
+  --blue: #1d6fa5;        /* Markenfarbe: Buttons, Links, aktive Elemente */
+  --blue-dark: #145581;   /* Kopfzeile, Ueberschriften */
+  --blue-light: #eaf3fa;  /* zarte Fuellflaechen */
+  --ink: #1f2933;         /* Textfarbe */
+  --font-sans: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius: 12px;
+  /* ... */
+}
+```
+
+Eine Hausschrift als Webfont wird per `@font-face` oder `@import` oberhalb von `:root` geladen und dann in `--font-sans` bzw. `--font-display` eingetragen. Fuer den Offline-Betrieb auf Praxis-Tablets die Schriftdateien lokal unter `assets/` ablegen, nicht von einem CDN laden.
+
+**PDF:** das Objekt `PDF_THEME` in `app.js`, direkt unter `PRAXIS`. Farben als RGB-Tripel, Schrift als jsPDF-Schriftname.
+
+```js
+const PDF_THEME = {
+  font: "helvetica",
+  heading: [20, 85, 129],
+  /* ... */
+};
+```
+
+jsPDF kennt von sich aus nur `helvetica`, `times` und `courier`. Eine eigene Hausschrift im PDF erfordert zusaetzlich das Einbetten der Schriftdatei ueber `doc.addFont` - das vergroessert jede PDF-Datei um die Schrift und ist nur sinnvoll, wenn das Corporate Design es verlangt.
+
 Der Fragenkatalog (Sicherheitsfragen, Schmerzbeschreibungen) ist direkt in `index.html` (Fragen) bzw. `app.js` (Liste `SCHMERZ_OPTIONEN`) hinterlegt und kann dort bei Bedarf angepasst werden.
 
 ## Technischer Aufbau
