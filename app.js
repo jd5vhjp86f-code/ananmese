@@ -4,7 +4,7 @@
   /* ---------- Praxis-Konfiguration (hier bei Bedarf anpassen) ---------- */
   const PRAXIS = {
     name: "Radiologie Dammtor",
-    aerzte: "Dr. D. Rückner und Dr. R. Rückner",
+    standorte: "Radiologie Dammtor und Radiologie Walddörfer",
     adresse: "Stephansplatz 1 · Dammtorwall 7a, 20354 Hamburg",
     telefon: "Tel: 040 - 35 00 4840"
   };
@@ -357,7 +357,7 @@
       doc.setTextColor(...PDF_THEME.textMuted);
       const right = pageW - marginR;
       let ry = top + 4;
-      [PRAXIS.aerzte, PRAXIS.adresse, PRAXIS.telefon].forEach(line => {
+      [PRAXIS.standorte, PRAXIS.adresse, PRAXIS.telefon].forEach(line => {
         doc.text(line, right, ry, { align: "right" });
         ry += 3.9;
       });
