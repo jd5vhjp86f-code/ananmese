@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anamnesebogen &ndash; mrt diagnostik dammtorwall</title>
+<title>Anamnesebogen MRT &ndash; Radiologie Dammtor</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="app-header">
   <div class="header-inner">
+    <img class="header-logo" src="assets/logo.svg"
+         alt="Radiologie Dammtor &ndash; Stephansplatz und Dammtorwall">
     <div class="clinic-id">
-      <div class="clinic-name">mrt diagnostik dammtorwall</div>
-      <div class="clinic-sub">Dr. D. Rückner &amp; Dr. R. Rückner &middot; Digitaler Anamnesebogen</div>
+      <div class="clinic-name">Anamnesebogen MRT</div>
+      <div class="clinic-sub">Dr. D. Rückner &amp; Dr. R. Rückner</div>
     </div>
   </div>
   <div class="progress-track" aria-hidden="true">
@@ -334,6 +336,10 @@
   <span class="step-indicator" id="stepIndicator">Schritt 1 von 6</span>
   <button type="button" id="nextBtn" class="primary-btn">Weiter</button>
 </footer>
+
+<!-- Briefkopf-Logo fuer die PDF-Erzeugung. Als Rastergrafik, weil jsPDF
+     kein SVG einbetten kann; wird nie angezeigt. -->
+<img id="pdfLogo" src="assets/logo.png" alt="" hidden>
 
 <script src="lib/jspdf.umd.min.js"></script>
 <script src="app.js"></script>

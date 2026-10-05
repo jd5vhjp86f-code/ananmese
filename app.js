@@ -3,7 +3,7 @@
 
   /* ---------- Praxis-Konfiguration (hier bei Bedarf anpassen) ---------- */
   const PRAXIS = {
-    name: "mrt diagnostik dammtorwall",
+    name: "Radiologie Dammtor",
     aerzte: "Dr. D. Rückner und Dr. R. Rückner",
     adresse: "Stephansplatz 1 · Dammtorwall 7a, 20354 Hamburg",
     telefon: "Tel: 040 - 35 00 4840"
@@ -15,13 +15,15 @@
      Schriftdatei (doc.addFont) - siehe README.                        */
   const PDF_THEME = {
     font: "helvetica",
-    heading:    [20, 85, 129],    // Abschnittstitel, entspricht --blue-dark
-    text:       [0, 0, 0],
-    textMuted:  [140, 140, 140],  // Fussnote
-    ruleStrong: [60, 60, 60],     // Ankreuzkaestchen
-    ruleMedium: [150, 150, 150],  // Unterschriftslinien, Rahmen
-    ruleSoft:   [180, 180, 180],  // Linie unter dem Briefkopf
-    ruleFaint:  [225, 225, 225]   // Trennlinien zwischen Fragen
+    heading:    [124, 110, 101],  // #7c6e65 Wortmarkenfarbe
+    text:       [55, 47, 41],     // #372f29 warmes Dunkel
+    textMuted:  [107, 98, 91],    // #6b625b, 6:1 auf Weiss
+    ruleStrong: [85, 76, 69],     // Ankreuzkaestchen
+    ruleMedium: [160, 152, 144],  // Unterschriftslinien, Rahmen
+    ruleSoft:   [124, 110, 101],  // Linie unter dem Briefkopf, Taupe
+    ruleFaint:  [220, 215, 208],  // #dcd7d0 Trennlinien zwischen Fragen
+    logoWidth:  46,               // mm; Hoehe folgt aus dem Seitenverhaeltnis
+    headingTracking: 0.6          // pt Sperrung der Abschnittstitel
   };
 
   const SCHMERZ_OPTIONEN = [
@@ -322,21 +324,42 @@
     let y = 0;
 
     function addLetterhead() {
-      y = 16;
-      doc.setFont(PDF_THEME.font, "bold");
-      doc.setFontSize(13);
-      doc.text(PRAXIS.name, marginL, y);
+      const top = 14;
+      const logo = document.getElementById("pdfLogo");
+      const logoReady = logo && logo.complete && logo.naturalWidth > 0;
+
+      if (logoReady) {
+        const w = PDF_THEME.logoWidth;
+        const h = w * logo.naturalHeight / logo.naturalWidth;
+        doc.addImage(logo, "PNG", marginL, top, w, h);
+        y = top + h;
+      } else {
+        // Ohne Logo bleibt der Briefkopf als Text lesbar.
+        doc.setFont(PDF_THEME.font, "bold");
+        doc.setFontSize(13);
+        doc.setTextColor(...PDF_THEME.heading);
+        doc.text(PRAXIS.name, marginL, top + 4);
+        doc.setTextColor(...PDF_THEME.text);
+        y = top + 8;
+      }
+
+      // Anschrift rechtsbuendig neben dem Logo
       doc.setFont(PDF_THEME.font, "normal");
-      doc.setFontSize(9.5);
-      y += 5;
-      doc.text(PRAXIS.aerzte, marginL, y);
-      y += 4.2;
-      doc.text(PRAXIS.adresse, marginL, y);
-      y += 4.2;
-      doc.text(PRAXIS.telefon, marginL, y);
-      y += 3;
+      doc.setFontSize(8.5);
+      doc.setTextColor(...PDF_THEME.textMuted);
+      const right = pageW - marginR;
+      let ry = top + 4;
+      [PRAXIS.aerzte, PRAXIS.adresse, PRAXIS.telefon].forEach(line => {
+        doc.text(line, right, ry, { align: "right" });
+        ry += 3.9;
+      });
+      doc.setTextColor(...PDF_THEME.text);
+
+      y = Math.max(y, ry) + 2.5;
       doc.setDrawColor(...PDF_THEME.ruleSoft);
-      doc.line(marginL, y, pageW - marginR, y);
+      doc.setLineWidth(0.5);
+      doc.line(marginL, y, right, y);
+      doc.setLineWidth(0.2);
       y += 8;
     }
 
@@ -350,9 +373,11 @@
     function heading(text) {
       ensureSpace(10);
       doc.setFont(PDF_THEME.font, "bold");
-      doc.setFontSize(12.5);
+      doc.setFontSize(11);
       doc.setTextColor(...PDF_THEME.heading);
-      doc.text(text, marginL, y);
+      doc.setCharSpace(PDF_THEME.headingTracking);
+      doc.text(text.toUpperCase(), marginL, y);
+      doc.setCharSpace(0);
       doc.setTextColor(...PDF_THEME.text);
       y += 6;
     }
