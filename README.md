@@ -33,7 +33,7 @@ Kopfzeile des PDFs (Praxisname, Ärzte, Adresse, Telefon) in `app.js` ganz oben 
 ```js
 const PRAXIS = {
   name: "Radiologie Dammtor",
-  aerzte: "Dr. D. Rückner und Dr. R. Rückner",
+  standorte: "Radiologie Dammtor und Radiologie Walddörfer",
   adresse: "Stephansplatz 1 · Dammtorwall 7a, 20354 Hamburg",
   telefon: "Tel: 040 - 35 00 4840"
 };
